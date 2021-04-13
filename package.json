@@ -10,28 +10,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "keywords": [
-    "angular",
-    "aot",
-    "library",
-    "data-table",
-    "data",
-    "table",
-    "typescript"
-  ],
-  "author": {
-    "name": "fantacode",
-    "url": "https://www.twitter.com/fantacode"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fantacode/data-table.git"
-  },
-  "bugs": {
-    "url": "https://github.com/fantacode/data-table/issues"
-  },
-  "homepage": "https://github.com/fantacode/data-table#readme",
-  "readme": "https://github.com/fantacode/data-table/readme",
   "dependencies": {
     "@angular/animations": "~11.2.8",
     "@angular/common": "~11.2.8",
