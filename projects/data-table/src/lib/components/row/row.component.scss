@@ -1,0 +1,44 @@
+.select-column {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  i {
+    // margin-top: 2px;
+    font-size: 22px;
+  }
+}
+
+.row-expand-button {
+  cursor: pointer;
+  text-align: center;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.row-o {
+  background-color: #FFF;
+}
+
+.row-e {
+  background-color: #F7F7F7;
+}
+
+.expanded {
+  background: #8422b5 !important;
+  color: #fff !important;
+  background: linear-gradient(#7819ab, #8520bc, #7819ab) !important;
+}
+
+.expander{
+  background: #f1f1f1;
+}
+
+td {
+  white-space: nowrap;
+  border: none !important;
+  font-size: 1em !important;
+  padding: 4px !important;
+}

@@ -2,6 +2,7 @@
  * Public API Surface of data-table
  */
 
-export * from './lib/data-table.service';
-export * from './lib/data-table.component';
+export * from './lib/components/data-table/datatable.component';
+export * from './lib/components/column/column.component';
 export * from './lib/data-table.module';
+

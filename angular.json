@@ -45,6 +45,126 @@
           }
         }
       }
+    },
+    "data-table-demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/data-table-demo",
+      "sourceRoot": "projects/data-table-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/data-table-demo",
+            "index": "projects/data-table-demo/src/index.html",
+            "main": "projects/data-table-demo/src/main.ts",
+            "polyfills": "projects/data-table-demo/src/polyfills.ts",
+            "tsConfig": "projects/data-table-demo/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/data-table-demo/src/favicon.ico",
+              "projects/data-table-demo/src/assets"
+            ],
+            "styles": [
+              "projects/data-table-demo/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/data-table-demo/src/environments/environment.ts",
+                  "with": "projects/data-table-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "data-table-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "data-table-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "data-table-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/data-table-demo/src/test.ts",
+            "polyfills": "projects/data-table-demo/src/polyfills.ts",
+            "tsConfig": "projects/data-table-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/data-table-demo/karma.conf.js",
+            "assets": [
+              "projects/data-table-demo/src/favicon.ico",
+              "projects/data-table-demo/src/assets"
+            ],
+            "styles": [
+              "projects/data-table-demo/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/data-table-demo/tsconfig.app.json",
+              "projects/data-table-demo/tsconfig.spec.json",
+              "projects/data-table-demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/data-table-demo/e2e/protractor.conf.js",
+            "devServerTarget": "data-table-demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "data-table-demo:serve:production"
+            }
+          }
+        }
+      }
     }
   },
   "defaultProject": "data-table"

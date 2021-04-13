@@ -1,0 +1,39 @@
+<data-table
+  id="persons-grid"
+  headerTitle="Employees"
+  [items]="items"
+  [itemCount]="itemCount"
+  (reload)="reloadItems($event)"
+  (rowClick)="rowClick($event)"
+  (rowDoubleClick)="rowDoubleClick($event)"
+  [rowTooltip]="rowTooltip"
+  [expandableRows]="false"
+  [selectOnRowClick]="true"
+  (rowExpanded)="rowExpand($event)"
+  (rowCollapsed)="rowCollapsed($event)"
+  [autoSearch]="false"
+  [indexColumn]="false"
+>
+  <data-table-column [property]="'name'" [filter]="true" [header]="'Name'" [sortable]="true" [resizable]="true" >
+  </data-table-column>
+  <data-table-column [resizable]="true" [property]="'date'" [header]="'Date'" [sortable]="true">
+    <ng-template #dataTableCell let-item="item">
+      <span>{{ item.date | date: "yyyy-MM-dd" }}</span>
+    </ng-template>
+  </data-table-column>
+  <data-table-column [filter]="true" [resizable]="true" property="phoneNumber" header="Phone number" width="150px" >
+  </data-table-column>
+  <data-table-column [resizable]="true" [property]="'jobTitle'" [header]="'Job title'" [visible]="false" >
+  </data-table-column>
+  <data-table-column [property]="'active'" [header]="'Active'" [width]="100" [resizable]="true">
+    <ng-template #dataTableHeader let-item="item">
+      <span style="color: rgb(232, 0, 0)">Active</span>
+    </ng-template>
+    <ng-template #dataTableCell let-item="item">
+      <span style="color: grey">
+        <span class="glyphicon glyphicon-ok" *ngIf="item.active"></span>
+        <span class="glyphicon glyphicon-remove" *ngIf="!item.active"></span>
+      </span>
+    </ng-template>
+  </data-table-column>
+</data-table>

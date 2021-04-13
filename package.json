@@ -1,14 +1,37 @@
 {
   "name": "fantacode-lib",
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build data-table --prod",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
-  "private": true,
+  "keywords": [
+    "angular",
+    "aot",
+    "library",
+    "data-table",
+    "data",
+    "table",
+    "typescript"
+  ],
+  "author": {
+    "name": "fantacode",
+    "url": "https://www.twitter.com/fantacode"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fantacode/data-table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fantacode/data-table/issues"
+  },
+  "homepage": "https://github.com/fantacode/data-table#readme",
+  "readme": "https://github.com/fantacode/data-table/readme",
   "dependencies": {
     "@angular/animations": "~11.2.8",
     "@angular/common": "~11.2.8",
