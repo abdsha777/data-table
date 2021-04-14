@@ -26,7 +26,8 @@ import { MinPipe } from './utility/min';
   ],
   exports: [
     DataTableComponent,
-    DataTableColumnDirective
+    DataTableColumnDirective,
+    DataTableRowComponent
   ]
 })
 export class DataTableModule { }

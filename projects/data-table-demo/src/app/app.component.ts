@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { DataTableResource } from '../../../data-table/src/lib/tools/data-table-resource';
+import { DataTableColumnDirective } from 'data-table';
+import { DataTableResource } from 'projects/data-table/src/public-api';
 import persons from './data';
 
 @Component({
