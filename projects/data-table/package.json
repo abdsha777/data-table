@@ -1,33 +1,32 @@
 {
-  "name": "data-table",
+  "name": "ngx-angular-data-table",
   "version": "1.0.0",
   "keywords": [
     "angular",
     "aot",
     "library",
     "data-table",
+    "ngx-angular-data-table",
     "data",
     "table",
     "typescript"
   ],
-  "author": {
-    "name": "fantacode",
-    "url": "https://www.twitter.com/fantacode"
-  },
+  "author": "fantacode (https://www.twitter.com/fantacode)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fantacode/data-table.git"
+    "url": "git+https://github.com/fantacode/data-table.git"
   },
   "bugs": {
     "url": "https://github.com/fantacode/data-table/issues"
   },
   "homepage": "https://github.com/fantacode/data-table#readme",
-  "readme": "https://github.com/fantacode/data-table/readme",
   "peerDependencies": {
     "@angular/common": "^11.2.9",
     "@angular/core": "^11.2.9"
   },
   "dependencies": {
     "tslib": "^2.0.0"
-  }
+  },
+  "description": "https://github.com/fantacode/data-table/readme",
+  "license": "MIT"
 }
