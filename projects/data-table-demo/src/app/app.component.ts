@@ -1,51 +1,60 @@
-import { Component } from '@angular/core';
-import { DataTableColumnDirective } from 'data-table';
+import { Component, OnInit } from '@angular/core';
+import { DataTableColumnDirective } from 'projects/data-table/src/public-api';
 import { DataTableResource } from 'projects/data-table/src/public-api';
 import persons from './data';
+
+interface Person {
+  name: string;
+  email: string;
+  jobTitle: string;
+  active: boolean;
+  phoneNumber: string;
+  date: string;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  itemResource = new DataTableResource(persons);
-  items: any = [];
+export class AppComponent implements OnInit {
+  itemResource: DataTableResource<Person>;
+  items: Person[] = [];
   itemCount = 0;
 
-    norm: any = {
-        description: 'Fellow Expandable'
-    };
+  norm = {
+    description: 'Fellow Expandable'
+  };
 
-    rowCollapsed(row): void {
-        console.log(row.item.name + ' Collapsed');
-    }
-
-    rowExpand(row): void {
-
-        console.log(row.item.name + ' Expanded');
-    }
   constructor() {
-      this.itemResource.count().then(
-        (count: any) => this.itemCount = count
-      );
+    this.itemResource = new DataTableResource<Person>(persons);
   }
 
-  reloadItems(params: any): void {
-      console.log(params);
-      this.itemResource.query(params).then((items: any) => this.items = items);
+  async ngOnInit(): Promise<void> {
+    this.itemCount = await this.itemResource.count();
   }
 
-  // special properties:
-
-  rowClick(rowEvent: any): void {
-    //   console.log('Clicked: ' + rowEvent.row.item.name);
+  rowCollapsed(row: { item: Person }): void {
+    console.log(`${row.item.name} Collapsed`);
   }
 
-  rowDoubleClick(rowEvent: any): void {
-    //   alert('Double clicked: ' + rowEvent.row.item.name);
+  rowExpand(row: { item: Person }): void {
+    console.log(`${row.item.name} Expanded`);
   }
 
-  rowTooltip(item: any): any{ return item.jobTitle; }
+  async reloadItems(params: any): Promise<void> {
+    this.items = await this.itemResource.query(params);
+  }
 
+  rowClick(rowEvent: { row: { item: Person } }): void {
+    // console.log('Clicked: ' + rowEvent.row.item.name);
+  }
+
+  rowDoubleClick(rowEvent: { row: { item: Person } }): void {
+    // alert('Double clicked: ' + rowEvent.row.item.name);
+  }
+
+  rowTooltip(item: Person): string {
+    return item.jobTitle;
+  }
 }
