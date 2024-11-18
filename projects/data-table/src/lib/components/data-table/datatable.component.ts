@@ -1,6 +1,7 @@
 import {
     Component, Input, Output, EventEmitter, ContentChildren, QueryList,
-    TemplateRef, ContentChild, ViewChildren, OnInit
+    TemplateRef, ContentChild, ViewChildren, OnInit,
+    OnDestroy
 } from '@angular/core';
 import { DataTableColumnDirective } from '../column/column.component';
 import { DataTableRowComponent} from '../row/row.component';
@@ -12,11 +13,20 @@ import { drag } from '../../utility/drag';
 
 @Component({
     // tslint:disable-next-line:component-selector
-    selector: 'data-table',
+    selector: 'app-data-table',  // BEFORE
     templateUrl: './datatable.component.html',
     styleUrls: ['./datatable.component.scss']
 })
-export class DataTableComponent implements DataTableParams, OnInit {
+export class DataTableComponent implements DataTableParams, OnInit, OnDestroy {
+
+    ngOnDestroy() {
+        if (this._scheduledReload) {
+            clearTimeout(this._scheduledReload);
+        }
+        if (this.popupTimeout) {
+            clearTimeout(this.popupTimeout);
+        }
+    }
     @Input() get items(): any[] {
         return this._items;
     }
@@ -78,7 +88,7 @@ export class DataTableComponent implements DataTableParams, OnInit {
     }
 
     get lastPage(): number {
-        return Math.ceil(this.itemCount / this.limit);
+        return Math.ceil((this.itemCount ?? 0) / this.limit);
     }
 
     get reloading(): boolean {
@@ -123,28 +133,29 @@ export class DataTableComponent implements DataTableParams, OnInit {
 
     // tslint:disable-next-line:variable-name
     private _items: any[] = [];
-    showPopup: number = null;
-    keyTrigger: (e: any) => void;
-    popupTimeout: any;
-    searchCompleted: boolean;
+    showPopup: number | null = null;
+    keyTrigger: ((e: any) => void) | undefined;
+    // popupTimeout: any;
+    popupTimeout: ReturnType<typeof setTimeout> | undefined;
+    searchCompleted?: boolean;
 
-    @Input() itemCount: number;
+    @Input() itemCount?: number;
 
     // UI components:
 
-    @ContentChildren(DataTableColumnDirective) columns: QueryList<DataTableColumnDirective>;
-    @ViewChildren(DataTableRowComponent) rows: QueryList<DataTableRowComponent>;
-    @ContentChild('dataTableExpand') expandTemplate: TemplateRef<any>;
+    @ContentChildren(DataTableColumnDirective) columns!: QueryList<DataTableColumnDirective>;
+    @ViewChildren(DataTableRowComponent) rows!: QueryList<DataTableRowComponent>;
+    @ContentChild('dataTableExpand') expandTemplate?: TemplateRef<any>;
 
     // One-time optional bindings with default values:
 
-    @Input() headerTitle: string;
+    @Input() headerTitle?: string;
     @Input() header = true;
     @Input() pagination = true;
     @Input() indexColumn = true;
     @Input() indexColumnHeader = '';
-    @Input() rowColors: RowCallback;
-    @Input() rowTooltip: RowCallback;
+    @Input() rowColors?: RowCallback;
+    @Input() rowTooltip?: RowCallback;
     @Input() selectColumn = true;
     @Input() multiSelect = true;
     @Input() substituteRows = true;
@@ -157,13 +168,13 @@ export class DataTableComponent implements DataTableParams, OnInit {
 
     // UI state without input:
 
-    indexColumnVisible: boolean;
-    selectColumnVisible: boolean;
-    expandColumnVisible: boolean;
+    indexColumnVisible: boolean = false;
+    selectColumnVisible: boolean = false;
+    expandColumnVisible: boolean = false;
 
     // UI state: visible ge/set for the outside with @Input for one-time initial values
 
-    private _sortBy: string;
+    private _sortBy: string = '';
     private _sortAsc = true;
 
     private _offset = 0;
@@ -180,7 +191,8 @@ export class DataTableComponent implements DataTableParams, OnInit {
     _displayParams = {} as DataTableParams; // params of the last finished reload
 
     // tslint:disable-next-line:member-ordering
-    _scheduledReload: number | null = null;
+    // _scheduledReload: number | null = null;
+    _scheduledReload: ReturnType<typeof setTimeout> | null = null;
 
     // event handlers:
 
@@ -338,10 +350,11 @@ export class DataTableComponent implements DataTableParams, OnInit {
         }
     }
 
-    getRowColor(item: any, index: number, row: DataTableRowComponent): string {
+    getRowColor(item: any, index: number, row: DataTableRowComponent): string | undefined {
         if (this.rowColors !== undefined) {
             return (this.rowColors as RowCallback)(item, row, index);
         }
+        return undefined;
     }
 
     private _onSelectAllChanged(value: boolean): void {
