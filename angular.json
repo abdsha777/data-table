@@ -65,7 +65,6 @@
             "main": "projects/data-table-demo/src/main.ts",
             "polyfills": "projects/data-table-demo/src/polyfills.ts",
             "tsConfig": "projects/data-table-demo/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/data-table-demo/src/favicon.ico",
               "projects/data-table-demo/src/assets"
@@ -73,7 +72,13 @@
             "styles": [
               "projects/data-table-demo/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -103,7 +108,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
