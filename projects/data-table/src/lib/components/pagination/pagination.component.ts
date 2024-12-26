@@ -1,5 +1,6 @@
 import { Component, Inject, forwardRef } from '@angular/core';
-import { DataTableComponent } from '../data-table/datatable.component';
+// import { DataTableComponent } from '../data-table/datatable.component';
+import { DataTableService } from '../../services/data-table.service';
 
 
 @Component({
@@ -10,41 +11,44 @@ import { DataTableComponent } from '../data-table/datatable.component';
 })
 export class DataTablePaginationComponent {
 
-    constructor(@Inject(forwardRef(() => DataTableComponent)) public dataTable: DataTableComponent) {}
+    constructor(
+        // @Inject(forwardRef(() => DataTableComponent)) public dataTable: DataTableComponent,
+        public dataTableService: DataTableService
+    ) {}
 
     pageBack(): void {
-        this.dataTable.offset -= Math.min(this.dataTable.limit, this.dataTable.offset);
+        this.dataTableService.offset -= Math.min(this.dataTableService.limit, this.dataTableService.offset);
     }
 
     pageForward(): void {
-        this.dataTable.offset += this.dataTable.limit;
+        this.dataTableService.offset += this.dataTableService.limit;
     }
 
     pageFirst(): void {
-        this.dataTable.offset = 0;
+        this.dataTableService.offset = 0;
     }
 
     pageLast(): void {
-        this.dataTable.offset = (this.maxPage - 1) * this.dataTable.limit;
+        this.dataTableService.offset = (this.maxPage - 1) * this.dataTableService.limit;
     }
 
     get maxPage(): number {
-        return Math.ceil(this.dataTable.itemCount / this.dataTable.limit);
+        return Math.ceil(this.dataTableService.itemCount / this.dataTableService.limit);
     }
 
     get limit(): number {
-        return this.dataTable.limit;
+        return this.dataTableService.limit;
     }
 
     set limit(value) {
-        this.dataTable.limit = Number(value as any); // TODO better way to handle that value of number <input> is string?
+        this.dataTableService.limit = Number(value as any); // TODO better way to handle that value of number <input> is string?
     }
 
     get page(): number {
-        return this.dataTable.page;
+        return this.dataTableService.page;
     }
 
     set page(value) {
-        this.dataTable.page = Number(value as any);
+        this.dataTableService.page = Number(value as any);
     }
 }

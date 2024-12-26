@@ -72,19 +72,15 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     @Input()
     get page(): number {
-        return Math.floor(this.offset / this.limit) + 1;
+        return this.dataTableService.page
     }
 
     set page(value) {
-        this.offset = (value - 1) * this.limit;
+        this.dataTableService.page = value
     }
 
     get lastPage(): number {
-        return Math.ceil(this.itemCount / this.limit);
-    }
-
-    get reloading(): boolean {
-        return this._reloading;
+        return this.dataTableService.lastPage
     }
 
     get displayParams() {
@@ -130,7 +126,13 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     popupTimeout: any;
     searchCompleted: boolean;
 
-    @Input() itemCount: number;
+    @Input()
+    set itemCount(value){
+        this.dataTableService.itemCount = value
+    }
+    get itemCount(){
+        return this.dataTableService.itemCount
+    }
 
     // UI components:
 
@@ -161,7 +163,13 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     // One-time optional bindings with default values:
 
-    @Input() headerTitle: string;
+    @Input()
+    set headerTitle(value){
+        this.dataTableService.headerTitle = value
+    }
+    get headerTitle(){
+        return this.dataTableService.headerTitle
+    }
     @Input() header = true;
     @Input() 
     set pagination(value){
@@ -170,7 +178,13 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     get pagination(){
         return this.dataTableService.pagination
     }
-    @Input() indexColumn = true;
+    @Input()
+    set indexColumn(value){
+        this.dataTableService.indexColumn = value
+    }
+    get indexColumn(){
+        return this.dataTableService.indexColumn
+    }
     @Input() indexColumnHeader = '';
     // @Input() rowColors: RowCallback;
     @Input()
@@ -180,7 +194,13 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     get rowTooltip(){
         return this.dataTableService.rowTooltip
     }
-    @Input() selectColumn = true;
+    @Input()
+    set selectColumn(value){
+        this.dataTableService.selectColumn = value
+    }
+    get selectColumn(){
+        return this.dataTableService.selectColumn
+    }
     @Input() multiSelect = true;
     @Input() substituteRows = true;
     // @Input() expandableRows = false;
@@ -191,7 +211,13 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     get expandableRows(){
         return this.dataTableService.expandableRows
     }
-    @Input() translations: DataTableTranslations = defaultTranslations;
+    @Input()
+    set translations(value){
+        this.dataTableService.translations = value
+    }
+    get translations(){
+        return this.dataTableService.translations
+    }
     // @Input() selectOnRowClick = false;
     @Input()
     set selectOnRowClick(value: boolean){
@@ -236,10 +262,15 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     // Reloading:
 
-    _reloading = false;
+    set reloading(value){
+        this.dataTableService.reloading = value
+    }
+    get reloading(){
+        return this.dataTableService.reloading
+    }
 
     // tslint:disable-next-line:member-ordering
-    @Output() reload = new EventEmitter();
+    @Output() reload = this.dataTableService.reload;
 
     // tslint:disable-next-line:member-ordering
     // _displayParams = {} as DataTableParams; // params of the last finished reload
@@ -279,7 +310,12 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     resizeLimit = 30;
 
-    search: SearchParam[] = [];
+    set search(value){
+        this.dataTableService.search = value
+    }
+    get search(){
+        return this.dataTableService.search
+    }
 
     // setting multiple observable properties simultaneously
 
@@ -314,7 +350,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     }
 
     reloadItems(): void {
-        this._reloading = true;
+        this.reloading = true;
         this.reload.emit(this._getRemoteParameters());
     }
 
@@ -322,7 +358,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
         this._updateDisplayParams();
 
         this._selectAllCheckbox = false;
-        this._reloading = false;
+        this.reloading = false;
     }
 
     _updateDisplayParams(): void {

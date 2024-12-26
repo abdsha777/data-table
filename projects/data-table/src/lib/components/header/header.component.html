@@ -1,8 +1,8 @@
 <div class="data-table-header">
-  <h4 class="title">{{dataTable.headerTitle || ''}}</h4>
+  <h4 class="title">{{dataTableService.headerTitle || ''}}</h4>
   <div class="button-panel">
       <button type="button" class="feature-button"
-          (click)="dataTable.reloadItems()">
+          (click)="dataTableService.reloadItems()">
           <i class="material-icons">refresh</i>
       </button>
       <button type="button" class="feature-button" [class.active]="columnSelectorOpen"
@@ -11,25 +11,25 @@
       </button>
       <div class="column-selector-wrapper" (click)="$event.stopPropagation()">
           <div *ngIf="columnSelectorOpen" class="column-selector-box panel panel-default">
-              <div *ngIf="dataTable.expandableRows" class="column-selector-fixed-column checkbox">
+              <div *ngIf="dataTableService.expandableRows" class="column-selector-fixed-column checkbox">
                   <label>
-                      <input type="checkbox" [(ngModel)]="dataTable.expandColumnVisible"/>
-                      <span>{{dataTable.translations.expandColumn}}</span>
+                      <input type="checkbox" [(ngModel)]="dataTableService.expandColumnVisible"/>
+                      <span>{{dataTableService.translations.expandColumn}}</span>
                   </label>
               </div>
-              <div *ngIf="dataTable.indexColumn" class="column-selector-fixed-column checkbox">
+              <div *ngIf="dataTableService.indexColumn" class="column-selector-fixed-column checkbox">
                   <label>
-                      <input type="checkbox" [(ngModel)]="dataTable.indexColumnVisible"/>
-                      <span>{{dataTable.translations.indexColumn}}</span>
+                      <input type="checkbox" [(ngModel)]="dataTableService.indexColumnVisible"/>
+                      <span>{{dataTableService.translations.indexColumn}}</span>
                   </label>
               </div>
-              <div *ngIf="dataTable.selectColumn" class="column-selector-fixed-column checkbox">
+              <div *ngIf="dataTableService.selectColumn" class="column-selector-fixed-column checkbox">
                   <label>
-                      <input type="checkbox" [(ngModel)]="dataTable.selectColumnVisible"/>
-                      <span>{{dataTable.translations.selectColumn}}</span>
+                      <input type="checkbox" [(ngModel)]="dataTableService.selectColumnVisible"/>
+                      <span>{{dataTableService.translations.selectColumn}}</span>
                   </label>
               </div>
-              <div *ngFor="let column of dataTable.columns" class="column-selector-column checkbox">
+              <div *ngFor="let column of dataTableService.columns" class="column-selector-column checkbox">
                   <label>
                       <input type="checkbox" [(ngModel)]="column.visible"/>
                       <span [textContent]="column.header"></span>

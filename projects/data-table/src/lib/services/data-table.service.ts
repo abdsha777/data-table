@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable, QueryList, TemplateRef } from "@angular/core";
-import { DataTableParams, RowCallback } from "../components/types";
+import { DataTableParams, DataTableTranslations, defaultTranslations, RowCallback, SearchParam } from "../components/types";
 
 @Injectable({
     providedIn: "root"
@@ -8,10 +8,20 @@ export class DataTableService {
     expandableRows: boolean = false;
     selectOnRowClick: boolean = false;
     expandColumnVisible: boolean;
+    indexColumn = true;
     indexColumnVisible: boolean;
+    selectColumn = true;
     selectColumnVisible: boolean;
     pagination = true;
     displayParams = {} as DataTableParams;
+    reloading = false;
+    search: SearchParam[] = [];
+    sortBy: string;
+    sortAsc = true;
+    headerTitle: string;
+    itemCount: number
+    offset = 0;
+    limit = 10;
 
     rows: QueryList<any>;
     columns: QueryList<any>;
@@ -21,6 +31,21 @@ export class DataTableService {
     rowClick = new EventEmitter();
     rowCollapsed = new EventEmitter();
     rowExpanded = new EventEmitter();
+    reload = new EventEmitter()
+
+    translations: DataTableTranslations = defaultTranslations
+
+    get page(): number {
+        return Math.floor(this.offset / this.limit) + 1;
+    }
+
+    set page(value) {
+        this.offset = (value - 1) * this.limit;
+    }
+
+    get lastPage(): number {
+        return Math.ceil(this.itemCount / this.limit);
+    }
 
     rowTooltip: RowCallback;
 
@@ -61,4 +86,23 @@ export class DataTableService {
         return count;
     }
     
+    reloadItems(): void {
+        this.reloading = true;
+        this.reload.emit(this._getRemoteParameters());
+    }
+
+    private _getRemoteParameters(): DataTableParams {
+        const params = {} as DataTableParams;
+
+        if (this.sortBy) {
+            params.sortBy = this.sortBy;
+            params.sortAsc = this.sortAsc;
+        }
+        if (this.pagination) {
+            params.offset = this.offset;
+            params.limit = this.limit;
+        }
+        params.search = this.search;
+        return params;
+    }
 }
