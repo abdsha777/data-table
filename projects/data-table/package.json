@@ -1,6 +1,6 @@
 {
-  "name": "ngx-angular-data-table",
-  "version": "1.0.1",
+  "name": "ngx-angular-data-table-ivy",
+  "version": "2.0.1",
   "keywords": [
     "angular",
     "aot",
@@ -11,15 +11,15 @@
     "table",
     "typescript"
   ],
-  "author": "fantacode (https://www.twitter.com/fantacode)",
+  "author": "abdsha777 (https://www.linkedin.com/in/abdulla-shaikh-abdulla/)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fantacode/data-table.git"
+    "url": "git+https://github.com/abdsha777/data-table.git"
   },
   "bugs": {
-    "url": "https://github.com/fantacode/data-table/issues"
+    "url": "https://github.com/abdsha777/data-table/issues"
   },
-  "homepage": "https://github.com/fantacode/data-table#readme",
+  "homepage": "https://github.com/abdsha777/data-table#readme",
   "peerDependencies": {
     "@angular/common": "~13.4.0",
     "@angular/core": "~13.4.0"
@@ -27,6 +27,6 @@
   "dependencies": {
     "tslib": "^2.0.0"
   },
-  "description": "https://github.com/fantacode/data-table/readme",
+  "description": "https://github.com/abdsha777/data-table/readme",
   "license": "MIT"
 }
