@@ -8,6 +8,7 @@ import { DataTableComponent } from './components/data-table/datatable.component'
 import { DataTablePaginationComponent } from './components/pagination/pagination.component';
 import { PixelConverter } from './utility/px';
 import { MinPipe } from './utility/min';
+import { DataTableService } from './services/data-table.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,9 @@ import { MinPipe } from './utility/min';
     DataTableComponent,
     DataTableColumnDirective,
     DataTableRowComponent
+  ],
+  providers:[
+    DataTableService
   ]
 })
 export class DataTableModule { }

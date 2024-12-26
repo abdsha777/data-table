@@ -1,7 +1,8 @@
 import {
   Component, Input, Inject, forwardRef, Output, EventEmitter, OnDestroy
 } from '@angular/core';
-import { DataTableComponent } from '../data-table/datatable.component';
+// import { DataTableComponent } from '../data-table/datatable.component';
+import { DataTableService } from '../../services/data-table.service';
 
 
 @Component({
@@ -36,9 +37,9 @@ export class DataTableRowComponent implements OnDestroy {
   // other:
 
   get displayIndex(): number {
-      if (this.dataTable.pagination) {
-          if (this.dataTable.displayParams.offset) {
-              return this.dataTable.displayParams.offset + this.index + 1;
+      if (this.dataTableService.pagination) {
+          if (this.dataTableService.displayParams.offset) {
+              return this.dataTableService.displayParams.offset + this.index + 1;
           }
           else { return 0 + this.index + 1; }
       } else {
@@ -47,14 +48,17 @@ export class DataTableRowComponent implements OnDestroy {
   }
 
   getTooltip(): string {
-      if (this.dataTable.rowTooltip) {
-          return this.dataTable.rowTooltip(this.item, this, this.index);
+      if (this.dataTableService.rowTooltip) {
+          return this.dataTableService.rowTooltip(this.item, this, this.index);
       }
       return '';
   }
 
-  constructor(@Inject(forwardRef(() => DataTableComponent)) public dataTable: DataTableComponent) {
-      console.log(this.item);
+  constructor(
+    // @Inject(forwardRef(() => DataTableComponent)) public dataTable: DataTableComponent,
+    public dataTableService: DataTableService
+  ) {
+    // console.log(this.item);
   }
 
   ngOnDestroy(): void {
@@ -66,7 +70,7 @@ export class DataTableRowComponent implements OnDestroy {
   }
 
   test(): void {
-      console.log(this.item);
+    //   console.log(this.item);
   }
 
   SelectionTrigger(): void {

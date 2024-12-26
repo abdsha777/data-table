@@ -1,14 +1,13 @@
 import {
-    Component, Input, Output, EventEmitter, ContentChildren, QueryList,
-    TemplateRef, ContentChild, ViewChildren, OnInit
+    Component, Input, Output, EventEmitter, ContentChildren,
+    TemplateRef, ContentChild, ViewChildren, OnInit,
 } from '@angular/core';
 import { DataTableColumnDirective } from '../column/column.component';
 import { DataTableRowComponent} from '../row/row.component';
 import { DataTableParams } from '../types';
 import { DataTableTranslations, defaultTranslations, SearchParam, RowCallback } from '../types';
 import { drag } from '../../utility/drag';
-
-
+import { DataTableService } from '../../services/data-table.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -16,7 +15,10 @@ import { drag } from '../../utility/drag';
     templateUrl: './datatable.component.html',
     styleUrls: ['./datatable.component.scss']
 })
-export class DataTableComponent implements DataTableParams, OnInit {
+export class DataTableComponent implements DataTableParams, OnInit  {
+
+    constructor(public dataTableService: DataTableService){}
+
     @Input() get items(): any[] {
         return this._items;
     }
@@ -86,7 +88,7 @@ export class DataTableComponent implements DataTableParams, OnInit {
     }
 
     get displayParams() {
-        return this._displayParams;
+        return this.dataTableService.displayParams;
     }
 
     get columnCount(): number {
@@ -132,35 +134,98 @@ export class DataTableComponent implements DataTableParams, OnInit {
 
     // UI components:
 
-    @ContentChildren(DataTableColumnDirective) columns: QueryList<DataTableColumnDirective>;
-    @ViewChildren(DataTableRowComponent) rows: QueryList<DataTableRowComponent>;
-    @ContentChild('dataTableExpand') expandTemplate: TemplateRef<any>;
+    // @ContentChildren(DataTableColumnDirective) columns: QueryList<DataTableColumnDirective>;
+    @ContentChildren(DataTableColumnDirective)
+    set columns(value){
+        this.dataTableService.columns = value
+    }
+    get columns(){
+        return this.dataTableService.columns
+    }
+
+    // @ViewChildren(DataTableRowComponent) rows: QueryList<DataTableRowComponent>;
+    @ViewChildren(DataTableRowComponent)
+    set rows(value){
+        this.dataTableService.rows = value
+    }
+    get rows(){
+        return this.dataTableService.rows
+    }
+    @ContentChild('dataTableExpand')
+    set expandTemplate(value){
+        this.dataTableService.expandTemplate = value
+    }
+    get expandTemplate(){
+        return this.dataTableService.expandTemplate
+    }
 
     // One-time optional bindings with default values:
 
     @Input() headerTitle: string;
     @Input() header = true;
-    @Input() pagination = true;
+    @Input() 
+    set pagination(value){
+        this.dataTableService.pagination = value
+    }
+    get pagination(){
+        return this.dataTableService.pagination
+    }
     @Input() indexColumn = true;
     @Input() indexColumnHeader = '';
-    @Input() rowColors: RowCallback;
-    @Input() rowTooltip: RowCallback;
+    // @Input() rowColors: RowCallback;
+    @Input()
+    set rowTooltip(value){
+        this.dataTableService.rowTooltip = value
+    }
+    get rowTooltip(){
+        return this.dataTableService.rowTooltip
+    }
     @Input() selectColumn = true;
     @Input() multiSelect = true;
     @Input() substituteRows = true;
-    @Input() expandableRows = false;
+    // @Input() expandableRows = false;
+    @Input()
+    set expandableRows(value: boolean){
+        this.dataTableService.expandableRows = value
+    }
+    get expandableRows(){
+        return this.dataTableService.expandableRows
+    }
     @Input() translations: DataTableTranslations = defaultTranslations;
-    @Input() selectOnRowClick = false;
+    // @Input() selectOnRowClick = false;
+    @Input()
+    set selectOnRowClick(value: boolean){
+        this.dataTableService.selectOnRowClick = value
+    }
+    get selectOnRowClick(){
+        return this.dataTableService.selectOnRowClick
+    }
     @Input() autoReload = true;
     @Input() showReloading = false;
     @Input() autoSearch = true;
 
     // UI state without input:
 
-    indexColumnVisible: boolean;
-    selectColumnVisible: boolean;
-    expandColumnVisible: boolean;
+    set indexColumnVisible(value){
+        this.dataTableService.indexColumnVisible = value
+    }
+    get indexColumnVisible(){
+        return this.dataTableService.indexColumnVisible
+    }
 
+    set selectColumnVisible(value) {
+        this.dataTableService.selectColumnVisible = value;
+    }
+    get selectColumnVisible(){
+        return this.dataTableService.selectColumnVisible
+    }
+    // expandColumnVisible: boolean;
+    set expandColumnVisible(value) {
+        this.dataTableService.expandColumnVisible = value;
+    }
+    get expandColumnVisible() {
+        return this.dataTableService.expandColumnVisible
+    }
     // UI state: visible ge/set for the outside with @Input for one-time initial values
 
     private _sortBy: string;
@@ -177,7 +242,7 @@ export class DataTableComponent implements DataTableParams, OnInit {
     @Output() reload = new EventEmitter();
 
     // tslint:disable-next-line:member-ordering
-    _displayParams = {} as DataTableParams; // params of the last finished reload
+    // _displayParams = {} as DataTableParams; // params of the last finished reload
 
     // tslint:disable-next-line:member-ordering
     _scheduledReload: number | null = null;
@@ -185,17 +250,21 @@ export class DataTableComponent implements DataTableParams, OnInit {
     // event handlers:
 
     // tslint:disable-next-line:member-ordering
-    @Output() rowClick = new EventEmitter();
+    @Output() rowClick = this.dataTableService.rowClick;
+    // @Output() rowClick = new EventEmitter();
     // tslint:disable-next-line:member-ordering
-    @Output() rowDoubleClick = new EventEmitter();
+    @Output() rowDoubleClick = this.dataTableService.rowDoubleClick;
+    // @Output() rowDoubleClick = new EventEmitter();
     // tslint:disable-next-line:member-ordering
     @Output() headerClick = new EventEmitter();
     // tslint:disable-next-line:member-ordering
     @Output() cellClick = new EventEmitter();
     // tslint:disable-next-line:member-ordering
-    @Output() rowExpanded = new EventEmitter();
+    @Output() rowExpanded = this.dataTableService.rowExpanded;
+    // @Output() rowExpanded = new EventEmitter();
     // tslint:disable-next-line:member-ordering
-    @Output() rowCollapsed = new EventEmitter();
+    @Output() rowCollapsed = this.dataTableService.rowCollapsed;
+    // @Output() rowCollapsed = new EventEmitter();
 
     // selection:
 
@@ -257,7 +326,7 @@ export class DataTableComponent implements DataTableParams, OnInit {
     }
 
     _updateDisplayParams(): void {
-        this._displayParams = {
+        this.dataTableService.displayParams = {
             sortBy: this.sortBy,
             sortAsc: this.sortAsc,
             offset: this.offset,
@@ -298,9 +367,9 @@ export class DataTableComponent implements DataTableParams, OnInit {
         this.rowClick.emit({ row, event });
     }
 
-    rowDoubleClicked(row: DataTableRowComponent, event: any): void {
-        this.rowDoubleClick.emit({ row, event });
-    }
+    // rowDoubleClicked(row: DataTableRowComponent, event: any): void {
+    //     this.rowDoubleClick.emit({ row, event });
+    // }
 
     headerClicked(column: DataTableColumnDirective, event: MouseEvent): void {
         if (!this._resizeInProgress) {
@@ -338,11 +407,11 @@ export class DataTableComponent implements DataTableParams, OnInit {
         }
     }
 
-    getRowColor(item: any, index: number, row: DataTableRowComponent): string {
-        if (this.rowColors !== undefined) {
-            return (this.rowColors as RowCallback)(item, row, index);
-        }
-    }
+    // getRowColor(item: any, index: number, row: DataTableRowComponent): string {
+    //     if (this.rowColors !== undefined) {
+    //         return (this.rowColors as RowCallback)(item, row, index);
+    //     }
+    // }
 
     private _onSelectAllChanged(value: boolean): void {
         this.rows.toArray().forEach(row => row.selected = value);

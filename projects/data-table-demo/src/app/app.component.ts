@@ -43,7 +43,7 @@ export class AppComponent {
   }
 
   rowDoubleClick(rowEvent: any): void {
-    //   alert('Double clicked: ' + rowEvent.row.item.name);
+      alert('Double clicked: ' + rowEvent.row.item.name);
   }
 
   rowTooltip(item: any): any{ return item.jobTitle; }
