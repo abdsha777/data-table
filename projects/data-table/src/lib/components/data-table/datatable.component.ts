@@ -323,8 +323,8 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     // setting multiple observable properties simultaneously
 
     sort(sortBy: string, asc: boolean): void {
-        this.dataTableService.sortBy = sortBy;
-        this.dataTableService.sortAsc = asc;
+        this.sortBy = sortBy;
+        this.sortAsc = asc;
     }
 
     // init
@@ -436,7 +436,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     private sortColumn(column: DataTableColumnDirective): void {
         if (column.sortable) {
-            const ascending = this.sortBy === column.property ? !this.dataTableService.sortAsc : true;
+            const ascending = this.sortBy === column.property ? !this.sortAsc : true;
             this.sort(column.property, ascending);
         }
     }
