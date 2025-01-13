@@ -20,9 +20,23 @@ export class DataTableService {
     sortAsc = true;
     headerTitle: string;
     itemCount: number
-    offset = 0;
-    limit = 10;
+    _offset = 0;
+    get offset(){
+        return this._offset;
+    }
+    set offset(val){
+        this._offset = val
+        this.triggerReload()
+    }
+    _limit = 10;
 
+    get limit(){
+        return this._limit
+    }
+    set limit(val){
+        this._limit = val
+        this.triggerReload()
+    }
     rows: QueryList<any>;
     columns: QueryList<any>;
     expandTemplate: TemplateRef<any>;
@@ -104,5 +118,15 @@ export class DataTableService {
         }
         params.search = this.search;
         return params;
+    }
+
+    _scheduledReload: number | null = null;
+    triggerReload(): void {
+        if (this._scheduledReload) {
+            clearTimeout(this._scheduledReload);
+        }
+        this._scheduledReload = setTimeout(() => {
+            this.reloadItems();
+        });
     }
 }

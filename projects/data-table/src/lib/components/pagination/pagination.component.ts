@@ -18,9 +18,11 @@ export class DataTablePaginationComponent {
 
     pageBack(): void {
         this.dataTableService.offset -= Math.min(this.dataTableService.limit, this.dataTableService.offset);
+        console.log("pageBack", this.dataTableService.offset);
     }
-
+    
     pageForward(): void {
+        console.log("pageForward", this.dataTableService.offset);
         this.dataTableService.offset += this.dataTableService.limit;
     }
 

@@ -30,53 +30,56 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     @Input()
     get sortBy(): string {
-        return this._sortBy;
+        return this.dataTableService.sortBy;
     }
 
     set sortBy(value) {
-        this._sortBy = value;
-        this._triggerReload();
+        this.dataTableService.sortBy = value;
+        this.dataTableService.triggerReload();
     }
 
     @Input()
     get sortAsc(): boolean {
-        return this._sortAsc;
+        return this.dataTableService.sortAsc;
     }
 
     set sortAsc(value) {
-        this._sortAsc = value;
-        this._triggerReload();
+        this.dataTableService.sortAsc = value;
+        this.dataTableService.triggerReload();
     }
 
     @Input()
     get offset(): number {
-        return this._offset;
+        return this.dataTableService.offset;
     }
 
     set offset(value) {
-        this._offset = value;
+        this.dataTableService.offset = value
+        console.log("offset changes")
         this._triggerReload();
     }
 
     @Input()
     get limit(): number {
-        return this._limit;
+        return this.dataTableService.limit;
     }
 
     set limit(value) {
-        this._limit = value;
-        this._triggerReload();
+        this.dataTableService.limit = value;
+        this.dataTableService.triggerReload();
     }
 
     // calculated property:
 
     @Input()
     get page(): number {
-        return this.dataTableService.page
+        // return this.dataTableService.page
+        return Math.floor(this.offset / this.limit) + 1
     }
 
     set page(value) {
         this.dataTableService.page = value
+        this.dataTableService.offset = (value)
     }
 
     get lastPage(): number {
@@ -320,8 +323,8 @@ export class DataTableComponent implements DataTableParams, OnInit  {
     // setting multiple observable properties simultaneously
 
     sort(sortBy: string, asc: boolean): void {
-        this.sortBy = sortBy;
-        this.sortAsc = asc;
+        this.dataTableService.sortBy = sortBy;
+        this.dataTableService.sortAsc = asc;
     }
 
     // init
@@ -332,7 +335,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
         this._updateDisplayParams();
 
         if (this.autoReload && this._scheduledReload == null) {
-            this.reloadItems();
+            this.dataTableService.reloadItems();
         }
     }
 
@@ -373,12 +376,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     // for avoiding cascading reloads if multiple params are set at once:
     _triggerReload(): void {
-        if (this._scheduledReload) {
-            clearTimeout(this._scheduledReload);
-        }
-        this._scheduledReload = setTimeout(() => {
-            this.reloadItems();
-        });
+        this.dataTableService.triggerReload()
     }
 
     rowClicked(row: DataTableRowComponent, event: any): void {
@@ -438,7 +436,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
 
     private sortColumn(column: DataTableColumnDirective): void {
         if (column.sortable) {
-            const ascending = this.sortBy === column.property ? !this.sortAsc : true;
+            const ascending = this.sortBy === column.property ? !this.dataTableService.sortAsc : true;
             this.sort(column.property, ascending);
         }
     }
@@ -566,7 +564,7 @@ export class DataTableComponent implements DataTableParams, OnInit  {
         this.showPopup = null;
         clearTimeout(this.popupTimeout);
         if (!this.autoSearch && !this.searchCompleted) {
-            this.offset = 0;
+            this.dataTableService.offset = 0;
             this.searchCompleted = true;
         }
     }
