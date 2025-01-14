@@ -129,4 +129,10 @@ export class DataTableService {
             this.reloadItems();
         });
     }
+
+    resetParams(){
+        this.search = []
+        this._offset = 0
+        this._limit = 10
+    }
 }

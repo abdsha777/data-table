@@ -334,6 +334,8 @@ export class DataTableComponent implements DataTableParams, OnInit  {
         this._initDefaultClickEvents();
         this._updateDisplayParams();
 
+        this.dataTableService.resetParams()
+
         if (this.autoReload && this._scheduledReload == null) {
             this.dataTableService.reloadItems();
         }
